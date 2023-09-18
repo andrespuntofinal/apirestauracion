@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: restauracion-deployment
+  labels:
+    app: restauracion-app
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: restauracion-app
+  template:
+    metadata:
+      labels:
+        app: restauracion-app
+    spec:
+      containers:
+        - name: restauracion-app
+          image: gcr.io/secret-zephyr-380100/api-restauracion
+          ports:
+            - containerPort: 9098

@@ -1,0 +1,4 @@
+# nota
+
+Directorio de imagenes
+

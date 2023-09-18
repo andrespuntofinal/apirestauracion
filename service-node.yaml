@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: restauracion-app
+  namespace: default
+spec:
+  ports:
+  - port: 9098
+    protocol: TCP
+    targetPort: 9098
+  selector:
+    app: restauracion-app
+  type: NodePort
