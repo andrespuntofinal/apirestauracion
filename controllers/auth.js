@@ -6,7 +6,7 @@ const { googleverify } = require('../helpers/google-verify');
 
 const login = async(req, res = response ) => {
 
-    const { email, uid } = req.body;
+    const { email, password } = req.body;
 
     try {
 
@@ -18,7 +18,7 @@ const login = async(req, res = response ) => {
 
             return res.status(400).json({
 
-                msg: 'Usuario - Contraseñea no son correctos - email'
+                msg: 'Usuario - Contraseñea no son correctos'
 
             });
             
@@ -29,7 +29,7 @@ const login = async(req, res = response ) => {
 
             return res.status(400).json({
 
-                msg: 'Usuario - Contraseñea no son correctos - estado'
+                msg: 'Usuario - Contraseñea no son correctos'
 
             });
             
@@ -37,13 +37,13 @@ const login = async(req, res = response ) => {
 
         // verificar uid
 
-        const usuarioid = await Usuario.findOne({ uid });
+        const usuarioid = await Usuario.findOne({ password });
 
         if ( !usuarioid ) {
 
             return res.status(400).json({
 
-                msg: 'Usuario - Contraseñea no son correctos - uid'
+                msg: 'Usuario - Contraseñea no son correctos'
                 
 
             });
@@ -52,7 +52,7 @@ const login = async(req, res = response ) => {
 
         //generar JWT
 
-        console.log('id antes...',usuario.id);
+        //console.log('id antes...',usuario.id);
 
         //const token = await generarJWT( usuario.uid );
         const token = await generarJWT( usuario.id );
@@ -107,6 +107,7 @@ const googleSingIn = async(req, res = response )=>{
             email,
             rol: 'ADMIN_ROLE',
             estado: true,
+            password,
             uid
         };
 

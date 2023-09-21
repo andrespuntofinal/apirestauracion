@@ -27,6 +27,13 @@ const UserSchema = Schema({
         required: [true, 'El uid es obligatorio']
     },
 
+    
+    password:{
+
+        type: String,
+        required: [true, 'La contraseña es obligatoria']
+    },
+
     estado:{
 
         type: Boolean,

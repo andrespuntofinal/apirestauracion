@@ -52,8 +52,8 @@ const usuariosGetById =async (req = request, res = response) => {
 
 const usuariosPost = async (req, res = response) => {
 
-const { nombre, email, rol, uid, estado } = req.body;
-const usuario =  new Usuario ( { nombre, email, rol, uid, estado } );
+const { nombre, email, rol, uid, password, estado } = req.body;
+const usuario =  new Usuario ( { nombre, email, rol, uid, password, estado } );
 
     await usuario.save();
 
