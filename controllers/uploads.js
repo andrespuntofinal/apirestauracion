@@ -1,8 +1,13 @@
+
+const admin = require('firebase-admin');
+const serviceAccount = require('../config/serviceAccountKey.json');
+
 const path = require('path');
 const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
 cloudinary.config( process.env.CLOUDINARY_URL);
 
+//firebase
 
 
 const { response } = require('express');
@@ -10,6 +15,15 @@ const { subirArchivo } = require('../helpers');
 const   Miembro    = require('../models/miembro');
 const   Evento    = require('../models/evento');
 
+//admin.initializeApp({
+
+ // credential: admin.credential.cert(serviceAccount),
+ // storageBucket: 'webrestauracion-3240c'
+//});
+
+//const bucket = admin.storage().bucket();
+
+// upload firebase
 
 
 const cargarArchivo = async (req, res = response) =>{
@@ -162,6 +176,117 @@ const actualizarImagenCloudinary = async (req, res = response ) =>{
 
 }
 
+const actualizarImagenFirebase = async (req, res = response ) =>{
+
+var admin = require("firebase-admin");
+var serviceAccount = require("../config/serviceAccountKey.json");
+
+  admin.initializeApp({
+    
+    credential: admin.credential.cert(serviceAccount),
+    storageBucket: process.env.BUCKET_URL
+  });
+  console.log('Firebase OK');
+
+  const { id, coleccion } = req.params;
+
+  let modelo;
+
+  switch ( coleccion ) {
+      case 'miembros':
+
+     
+       modelo = await Miembro.findById(id);
+
+        if ( !modelo ) {
+
+          return res.status(400).json({ msg: `No existe un usuario con el id ${id}`});
+          
+        }
+
+          
+          break;
+
+          case 'eventos':
+
+     
+          modelo = await Evento.findById(id);
+ 
+           if ( !modelo ) {
+ 
+             return res.status(400).json({ msg: `No existe un evento con el id ${id}`});
+             
+           }
+ 
+             
+             break;
+  
+      default:
+          return res.status(500).json({ msg: 'Se olvidó validar esto'});
+  }
+
+  //Limpiar img previas
+
+  if (modelo.imagen) {
+
+   // const nombreArr = modelo.imagen.split('/');
+   // const nombre = nombreArr [ nombreArr.length - 1 ];
+   // const [ public_id ] = nombre.split('.');
+
+   // cloudinary.uploader.destroy( public_id );
+
+      console.log('imagen existe');
+    
+  }
+
+  //console.log(req.files.archivo);
+
+  //tempFilePath
+
+  //const { tempFilePath } = req.files.archivo
+  //const  { secure_url } = await cloudinary.uploader.upload( tempFilePath );
+
+  //firebase
+  const bucket = admin.storage().bucket();
+  const filePath = 'D:/Imagenes/piano.png';
+  const storagePath = 'img/piano.png'; 
+
+  try {
+    await bucket.upload(filePath, {
+      destination: storagePath,
+      gzip: true,
+      metadata: {
+        cacheControl: 'public, max-age=31536000' // Configura el tiempo de almacenamiento en caché del archivo (en este caso, 1 año)
+      },
+    });
+
+    console.log('Archivo subido correctamente a Firebase Storage.');
+
+    // Obtén la URL firmada del archivo que acabas de subir
+const [urlFirebase] = await bucket.file(storagePath).getSignedUrl({
+action: 'read',
+expires: '03-09-2491' // Ajusta la fecha de caducidad de la URL según tus necesidades
+});
+console.log('URL de la imagen:', urlFirebase);
+
+modelo.imagen = urlFirebase;
+
+  } catch (error) {
+    console.error('Error al subir el archivo:', error);
+  }
+
+  
+
+  //cierra firebase
+  
+  //modelo.imagen = secure_url;
+
+  await modelo.save();
+
+  res.json( modelo );
+
+}
+
 const mostrarImagen = async (req, res = response) => {
 
   const { id, coleccion } = req.params;
@@ -224,5 +349,6 @@ module.exports = {
     cargarArchivo,
     actualizarImagen,
     mostrarImagen,
-    actualizarImagenCloudinary
+    actualizarImagenCloudinary,
+    actualizarImagenFirebase
 }

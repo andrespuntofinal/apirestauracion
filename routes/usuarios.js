@@ -26,7 +26,11 @@ const { usuariosGet,
 const router = Router();
 
 
-router.get('/', usuariosGet );
+router.get('/', [
+    validarJWT
+], usuariosGet );
+
+
 
 router.get('/:id', usuariosGetById );
 

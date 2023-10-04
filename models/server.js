@@ -3,8 +3,6 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const { dbConnection } = require('../database/config');
 
-
-
 class Server {
 
     constructor() {
@@ -41,6 +39,10 @@ class Server {
             await dbConnection();
             
       }
+
+          //conect firebase
+
+
 
     middlewares() {
 

@@ -13,7 +13,10 @@ const router = Router();
 
 
 //obtener todos los miembros
-router.get('/', obtenerMiembros );
+router.get('/', [
+    validarJWT
+], obtenerMiembros );
+
 
 //obtener un miembro por id
 router.get('/:id', [
