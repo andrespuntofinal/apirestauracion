@@ -1,14 +1,10 @@
-
-const admin = require('firebase-admin');
-const serviceAccount = require('../config/serviceAccountKey.json');
-
 const path = require('path');
 const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
 cloudinary.config( process.env.CLOUDINARY_URL);
 
 //firebase
-
+const { admin } = require('../database/config');
 
 const { response } = require('express');
 const { subirArchivo } = require('../helpers');
@@ -178,17 +174,7 @@ const actualizarImagenCloudinary = async (req, res = response ) =>{
 
 const actualizarImagenFirebase = async (req, res = response ) =>{
 
-var admin = require("firebase-admin");
-var serviceAccount = require("../config/serviceAccountKey.json");
-
-  admin.initializeApp({
-    
-    credential: admin.credential.cert(serviceAccount),
-    storageBucket: process.env.BUCKET_URL
-  });
-  console.log('Firebase OK');
-
-  const { id, coleccion } = req.params;
+const { id, coleccion } = req.params;
 
   let modelo;
 
@@ -229,27 +215,19 @@ var serviceAccount = require("../config/serviceAccountKey.json");
 
   if (modelo.imagen) {
 
-   // const nombreArr = modelo.imagen.split('/');
-   // const nombre = nombreArr [ nombreArr.length - 1 ];
-   // const [ public_id ] = nombre.split('.');
 
-   // cloudinary.uploader.destroy( public_id );
-
-      console.log('imagen existe');
+      console.log('imagen existesssssssssssssssss');
     
   }
 
-  //console.log(req.files.archivo);
+ 
+  const { tempFilePath } = req.files.archivo
 
-  //tempFilePath
+  console.log('imagen rutaaaaaa', tempFilePath );
 
-  //const { tempFilePath } = req.files.archivo
-  //const  { secure_url } = await cloudinary.uploader.upload( tempFilePath );
-
-  //firebase
   const bucket = admin.storage().bucket();
-  const filePath = 'D:/Imagenes/piano.png';
-  const storagePath = 'img/piano.png'; 
+  const filePath = tempFilePath;
+  const storagePath = 'img/' + req.files.archivo['name']; 
 
   try {
     await bucket.upload(filePath, {
@@ -269,17 +247,14 @@ expires: '03-09-2491' // Ajusta la fecha de caducidad de la URL según tus neces
 });
 console.log('URL de la imagen:', urlFirebase);
 
+ //tempFilePath = "";
+
 modelo.imagen = urlFirebase;
 
   } catch (error) {
     console.error('Error al subir el archivo:', error);
   }
 
-  
-
-  //cierra firebase
-  
-  //modelo.imagen = secure_url;
 
   await modelo.save();
 
