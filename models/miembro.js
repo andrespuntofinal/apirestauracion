@@ -1,4 +1,6 @@
 const { Schema, model } = require('mongoose');
+const format = require('date-fns/format');
+const parseISO = require('date-fns/parseISO');
 
 const MiembroSchema = Schema({
 
@@ -67,8 +69,9 @@ const MiembroSchema = Schema({
 
     fecha_nacimiento:{
 
-        type: Date
-        
+        type: String,
+
+                  
     },
 
     imagen:{
@@ -93,7 +96,7 @@ const MiembroSchema = Schema({
 
     fecha_membresia:{
 
-        type: Date
+        type: String
         
     },
 

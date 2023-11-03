@@ -30,7 +30,6 @@ router.get('/:id', [
 router.post('/',  [ 
     validarJWT,
     check('nombre', 'El nombre es obligatorio').not().isEmpty(),
-    check('ministerio').custom( esMinisterioValido ),
     validarCampos
 ], crearMiembro);
 
