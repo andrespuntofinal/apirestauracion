@@ -90,7 +90,7 @@ const MiembroSchema = Schema({
     bautizado:{
 
         type: String,
-        emun: ['SI', 'NO']
+        emun: ['BAUTIZADO', 'NO BAUTIZADO']
         
     },
 

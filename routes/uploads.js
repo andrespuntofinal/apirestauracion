@@ -11,7 +11,7 @@ router.post('/', validarArchivoSubir, cargarArchivo);
 router.put('/:coleccion/:id', [
     validarArchivoSubir,
     check('id', 'El id debe ser de mongo').isMongoId(),
-    check('coleccion').custom( c => coleccionesPermitidas(c, ['miembros', 'eventos'])),
+    check('coleccion').custom( c => coleccionesPermitidas(c, ['miembros', 'eventos', 'usuarios'])),
     validarCampos
     ], actualizarImagenFirebase )
 

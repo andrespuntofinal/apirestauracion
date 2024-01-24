@@ -9,6 +9,7 @@ const { admin } = require('../database/config');
 const { response } = require('express');
 const { subirArchivo } = require('../helpers');
 const   Miembro    = require('../models/miembro');
+const   Usuario    = require('../models/usuario');
 const   Evento    = require('../models/evento');
 
 //admin.initializeApp({
@@ -62,6 +63,20 @@ const actualizarImagen = async (req, res = response ) =>{
             
             break;
 
+            case 'usuarios':
+
+       
+         modelo = await Usuario.findById(id);
+
+          if ( !modelo ) {
+
+            return res.status(400).json({ msg: `No existe un usuario con el id ${id}`});
+            
+          }
+
+            
+            break;
+
             case 'eventos':
 
        
@@ -102,76 +117,6 @@ const actualizarImagen = async (req, res = response ) =>{
 
 }
 
-const actualizarImagenCloudinary = async (req, res = response ) =>{
-
- 
-  const { id, coleccion } = req.params;
-
-  let modelo;
-
-  switch ( coleccion ) {
-      case 'miembros':
-
-     
-       modelo = await Miembro.findById(id);
-
-        if ( !modelo ) {
-
-          return res.status(400).json({ msg: `No existe un usuario con el id ${id}`});
-          
-        }
-
-          
-          break;
-
-          case 'eventos':
-
-     
-          modelo = await Evento.findById(id);
- 
-           if ( !modelo ) {
- 
-             return res.status(400).json({ msg: `No existe un evento con el id ${id}`});
-             
-           }
- 
-             
-             break;
-  
-      default:
-          return res.status(500).json({ msg: 'Se olvidó validar esto'});
-  }
-
-  //Limpiar img previas
-
-  if (modelo.imagen) {
-
-    const nombreArr = modelo.imagen.split('/');
-    const nombre = nombreArr [ nombreArr.length - 1 ];
-    const [ public_id ] = nombre.split('.');
-
-    cloudinary.uploader.destroy( public_id );
-
-      
-    
-  }
-
-  //console.log(req.files.archivo);
-
-  //tempFilePath
-
-  const { tempFilePath } = req.files.archivo
-  const  { secure_url } = await cloudinary.uploader.upload( tempFilePath );
-
-  
-  modelo.imagen = secure_url;
-
-  await modelo.save();
-
-  res.json( modelo );
-
-}
-
 const actualizarImagenFirebase = async (req, res = response ) =>{
 
 const { id, coleccion } = req.params;
@@ -192,6 +137,22 @@ const { id, coleccion } = req.params;
 
           
           break;
+
+
+          case 'usuarios':
+
+     
+          modelo = await Usuario.findById(id);
+   
+           if ( !modelo ) {
+   
+             return res.status(400).json({ msg: `No existe un usuario con el id ${id}`});
+             
+           }
+   
+             
+             break;
+
 
           case 'eventos':
 
@@ -238,14 +199,14 @@ const { id, coleccion } = req.params;
       },
     });
 
-    console.log('Archivo subido correctamente a Firebase Storage.');
+   // console.log('Archivo subido correctamente a Firebase Storage.');
 
     // Obtén la URL firmada del archivo que acabas de subir
 const [urlFirebase] = await bucket.file(storagePath).getSignedUrl({
 action: 'read',
 expires: '03-09-2491' // Ajusta la fecha de caducidad de la URL según tus necesidades
 });
-console.log('URL de la imagen:', urlFirebase);
+//console.log('URL de la imagen:', urlFirebase);
 
  //tempFilePath = "";
 
@@ -324,6 +285,5 @@ module.exports = {
     cargarArchivo,
     actualizarImagen,
     mostrarImagen,
-    actualizarImagenCloudinary,
     actualizarImagenFirebase
 }

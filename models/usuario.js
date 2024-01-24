@@ -36,8 +36,13 @@ const UserSchema = Schema({
 
     estado:{
 
-        type: Boolean,
-        default: true
+        type: String
+    },
+
+    imagen:{
+
+        type: String
+        
     }
 
 
