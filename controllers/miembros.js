@@ -6,6 +6,7 @@ const  Miembro  = require('../models/miembro');
 const crearMiembro = async (req, res = response) =>{
 
     const nombre = req.body.nombre.toUpperCase();
+    const tipo_id  = req.body.tipo_id;
     const numero_id = req.body.numero_id;
     const email = req.body.email;
     const telefono = req.body.telefono;
@@ -22,6 +23,9 @@ const crearMiembro = async (req, res = response) =>{
     const fecha_membresia = req.body.fecha_membresia;
     const lider_contacto = req.body.lider_contacto;
     const ministerio = req.body.ministerio;
+    const estado = req.body.estado;
+    const ocupacion = req.body.ocupacion;
+    const grupo_celular = req.body.grupo_celular;
 
 
     //generar data a guardar
@@ -30,6 +34,7 @@ const crearMiembro = async (req, res = response) =>{
 
         nombre,
         numero_id,
+        tipo_id,
         telefono,
         celular,
         email, 
@@ -45,6 +50,9 @@ const crearMiembro = async (req, res = response) =>{
         fecha_membresia, 
         lider_contacto,
         ministerio,
+        estado,
+        ocupacion,
+        grupo_celular,
         usuario: req.usuario._id
     }
 
@@ -65,7 +73,7 @@ const crearMiembro = async (req, res = response) =>{
 const obtenerMiembros =async (req = request, res = response) => {
 
     //const { limite = 5, desde = 0 } = req.query;
-    const query = { estado: true };
+    const query = { estado: 'Activo' };
     
      
     const [ total, miembros ] = await Promise.all([
@@ -100,7 +108,7 @@ const obtenerMiembro = async( req = request, res = response) => {
 const actualizarMiembro = async( req = request, res = response) => {
 
     const { id } = req.params;
-    const { estado, usuario, ...data } = req.body;
+    const { usuario, ...data } = req.body;
 
     data.nombre = data.nombre.toUpperCase();
     data.usuario = req.usuario._id;
@@ -118,7 +126,7 @@ const eliminarMiembro = async( req = request, res = response) => {
 
     const { id } = req.params;
     
-    const miembroBorrado = await Miembro.findByIdAndUpdate( id, { estado: false }, { new: true } );
+    const miembroBorrado = await Miembro.findByIdAndUpdate( id, { estado: 'Inactivo' }, { new: true } );
 
     res.json( miembroBorrado );
 

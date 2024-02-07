@@ -10,6 +10,12 @@ const MiembroSchema = Schema({
         required: [true, 'El nombre es obligatorio']
     },
 
+    tipo_id:{
+
+        type: String
+        
+    },
+
     numero_id:{
 
         type: String
@@ -48,28 +54,25 @@ const MiembroSchema = Schema({
 
     sexo:{
 
-        type: String,
-        emun: ['MASCULINO', 'FEMENINO']
+        type: String
         
     },
 
     poblacion:{
 
-        type: String,
-        emun: ['INFANTE', 'NIÑO', 'ADOLESCENTE', 'JOVEN', 'ADULTO', 'ANCIANO']
+        type: String
         
     },
 
     estado_civil:{
 
-        type: String,
-        emun: ['CASADO', 'SOLTERO', 'UNION LIBRE', 'OTRO']
+        type: String
         
     },
 
     fecha_nacimiento:{
 
-        type: String,
+        type: String
 
                   
     },
@@ -82,15 +85,13 @@ const MiembroSchema = Schema({
 
     tipo_miembro:{
 
-        type: String,
-        emun: ['LIDER', 'NUEVO', 'ASISTENTE IREGULAR', 'ASISTENTE REGULAR', 'PASTOR']
+        type: String
         
     },
 
     bautizado:{
 
-        type: String,
-        emun: ['BAUTIZADO', 'NO BAUTIZADO']
+        type: String
         
     },
 
@@ -115,8 +116,20 @@ const MiembroSchema = Schema({
     
     estado:{
 
-    type: Boolean,
-    default: true
+    type: String
+    
+    },
+
+    ocupacion:{
+
+        type: String
+        
+    },
+
+    grupo_celular:{
+
+        type: String
+        
     },
 
     usuario: {

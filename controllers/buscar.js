@@ -69,7 +69,7 @@ const miembros = await Miembro.find( {
     $or: [{  nombre: regex }, { email: regex }, { numero_id: regex }, 
           { tipo_miembro: regex }, { ministerio: regex }, { tipo_miembro: regex },
           { poblacion: regex }, { estado_civil: regex }, { sexo: regex },
-          { bautizado: regex }
+          { bautizado: regex },  { estado: regex },  { ocupacion: regex }
         ],
     $and: [{ estado: true }]
 
