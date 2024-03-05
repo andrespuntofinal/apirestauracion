@@ -70,8 +70,7 @@ const miembros = await Miembro.find( {
           { tipo_miembro: regex }, { ministerio: regex }, { tipo_miembro: regex },
           { poblacion: regex }, { estado_civil: regex }, { sexo: regex },
           { bautizado: regex },  { estado: regex },  { ocupacion: regex }
-        ],
-    $and: [{ estado: true }]
+        ]
 
  });
 
