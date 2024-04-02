@@ -38,7 +38,8 @@ const obtenerAportes =async (req = request, res = response) => {
         Aporte.countDocuments(query),
         Aporte.find(query)
             .populate('usuario', 'nombre')
-            .populate('miembro', 'nombre')
+            .populate('miembro', 'nombre numero_id')
+           
             
 
 
@@ -58,7 +59,8 @@ const obtenerAporte = async( req = request, res = response) => {
     const { id } = req.params;
     const aporte = await Aporte.findById( id )
                         .populate('usuario', 'nombre')
-                        .populate('miembro', 'nombre');
+                        .populate('miembro', 'nombre numero_id');
+                       
 
     res.json( aporte );
 

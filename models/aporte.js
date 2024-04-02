@@ -19,7 +19,7 @@ const AporteSchema = Schema({
 
     fecha_aporte:{
 
-        type: Date,
+        type: String,
         required: true
         
     },
